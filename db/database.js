@@ -1,5 +1,5 @@
 const mongo = require("mongodb").MongoClient;
-// require('dotenv').config()
+require('dotenv').config()
 const collectionName = "crowd";
 
 const database = {
@@ -15,10 +15,15 @@ const database = {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
+
+
         const db = await client.db();
+
         const collection = await db.collection(collectionName);
 
+
         return {
+            db: db,
             collection: collection,
             client: client,
         };
@@ -26,3 +31,4 @@ const database = {
 };
 
 module.exports = database;
+

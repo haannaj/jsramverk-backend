@@ -6,7 +6,9 @@
   "scripts": {
     "start": "nodemon app.js",
     "production": "NODE_ENV='production' node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc --reporter=html --reporter=text --reporter=clover mocha --timeout 10000 --exit",
+    "clean": "rm -rf node_modules package-lock.json",
+    "eslint": "eslint ."
   },
   "author": "",
   "license": "ISC",
@@ -15,11 +17,19 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
-    "mongodb": "^4.9.1",
+    "mongodb": "^4.10.0",
+    "mongoose": "^6.6.1",
     "morgan": "^1.10.0",
     "nodeman": "^1.1.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "eslint": "^8.23.1",
+    "eslint-plugin-react": "^7.31.8",
+    "javascript-style-guide": "^1.0.1",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.19",
+    "nyc": "^15.1.0"
   }
 }
