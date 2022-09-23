@@ -150,7 +150,7 @@ describe('Editor Documents', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
 
-                    res.body.data.length.should.be.eql(0);
+                    res.body.data.length.should.be.eql(1);
                     done();
                 });
             });
