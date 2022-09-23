@@ -46,7 +46,7 @@ describe('Editor Documents', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array")
-                    res.body.data.length.should.be.eql(1);
+                    res.body.data.length.should.be.eql(0);
                     done();
                 });
         });
@@ -74,7 +74,7 @@ describe('Editor Documents', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
-                    res.body.data.length.should.be.eql(2);
+                    res.body.data.length.should.be.eql(1);
 
                     done();
                 });
@@ -96,7 +96,7 @@ describe('Editor Documents', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
-                    res.body.data.length.should.be.eql(4);
+                    res.body.data.length.should.be.eql(3);
 
                     done();
                 });
@@ -131,7 +131,7 @@ describe('Editor Documents', () => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
                     res.body.data[1]['bor'].should.be.eql('Muminhus')
-                    res.body.data.length.should.be.eql(4);
+                    res.body.data.length.should.be.eql(3);
                     done();
                 });
         });
@@ -150,7 +150,7 @@ describe('Editor Documents', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
 
-                    res.body.data.length.should.be.eql(1);
+                    res.body.data.length.should.be.eql(0);
                     done();
                 });
             });
