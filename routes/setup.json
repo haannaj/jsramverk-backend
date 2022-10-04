@@ -1,10 +1,10 @@
 [
     {
         "namn": "Mumintrollet",
-        "bor": "Mumindalen"
+        "text": "Bor i Mumindalen"
     },
     {
         "namn": "Sniff",
-        "bor": "Mumindalen"
+        "text": "Bor i Mumindalen"
     }
 ]

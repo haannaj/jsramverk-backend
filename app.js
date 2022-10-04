@@ -4,15 +4,15 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || 3132;
 
 const list = require('./routes/list');
 
 app.use(express.json());
+const httpServer = require("http").createServer(app);
+
 app.use(cors());
-
 app.disable('x-powered-by');
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,6 +33,24 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.use('/', list);
+
+
+const io = require("socket.io")(httpServer, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+});
+
+io.sockets.on('connection', function(socket) {
+    console.log(socket.id); // Nått lång och slumpat
+
+    socket.on("amount", function(data) {
+        console.log(data)
+        socket.broadcast.emit("amount", data);
+    })
+});
+
 
 app.use((req, res, next) => {
     var err = new Error("Not Found");
@@ -56,6 +74,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const server = httpServer.listen(port, () => console.log(`Jsramverk listening on port ${port}!`));
 
 module.exports = server;
