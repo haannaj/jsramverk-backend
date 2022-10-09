@@ -1,0 +1,34 @@
+[
+    {
+        "namn": "Mumintrollet",
+        "text": "Bor i Mumindalen",
+        "allowed_users": [
+            "633ec4334550579921457010",
+            "633d9c6f3bebf9ae9bcb6e18"
+        ]  
+    },
+    {
+        "namn": "Sniff",
+        "text": "Bor hemma hos mumin och är bra kompisar"
+    },
+    {
+        "namn": "Snorkfröken",
+        "text": "Plockar blommor"
+    },
+    {
+        "namn": "Lilla My",
+        "text": "Är inte rädd för något"
+    },
+    {
+        "namn": "Snusmumrik",
+        "text": "Har en grön hatt och en gammal rock "
+    },
+    {
+        "namn": "Muminmamman",
+        "text": "Trivs bäst hemma"
+    },
+    {
+        "namn": "Muminpappan",
+        "text": "Djupsinnig tänkare som grubblar över de stora livsfrågorna"
+    }
+]

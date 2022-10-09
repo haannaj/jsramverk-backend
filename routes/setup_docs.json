@@ -1,0 +1,26 @@
+[
+    {
+        "namn": "Mumintrollet",
+        "text": "Bor i Mumindalen",
+        "owner": "test@test.se",
+        "allowed_users": [
+            "test@test.se"
+        ]  
+    },
+    {
+        "namn": "Sniff",
+        "text": "Bor hemma hos mumin och är bra kompisar",
+        "owner": "test@test.se",
+        "allowed_users": [
+            "test@test.se"
+        ]  
+    },
+    {
+        "namn": "Snorkfröken",
+        "text": "Plockar blommor",
+        "owner": "test@test.se",
+        "allowed_users": [
+            "test@test.se"
+        ]  
+    }
+]

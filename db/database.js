@@ -1,9 +1,9 @@
 const mongo = require("mongodb").MongoClient;
 require('dotenv').config()
-const collectionName = "crowd";
 
 const database = {
-    getDb: async function getDb () {
+    getDb: async function getDb (collectionName) {
+
         // let dsn = `mongodb://localhost:27017/test`;
         let dsn = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@cluster0.kiyuqpr.mongodb.net/?retryWrites=true&w=majority`
 

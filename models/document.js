@@ -3,9 +3,11 @@ const ObjectId = require("mongodb").ObjectId;
 const fs = require("fs");
 const path = require("path");
 const docs = JSON.parse(fs.readFileSync(
-    path.resolve(__dirname, "../routes/setup.json"),
+    path.resolve(__dirname, "../routes/setup_docs.json"),
     "utf8"
 ));
+const collectionName = "crowd";
+
 
 const documents = {
     getAllDoc: async function getAllDoc() {
@@ -13,7 +15,7 @@ const documents = {
         let db;
 
         try {
-            db = await database.getDb();
+            db = await database.getDb(collectionName);
 
             const alldocs = await db.collection.find().toArray();
 
@@ -32,7 +34,7 @@ const documents = {
         let db;
 
         try {
-            db = await database.getDb();
+            db = await database.getDb(collectionName);
 
             const result = await db.collection.insertOne(newDoc);
             
@@ -51,7 +53,7 @@ const documents = {
 
         try {
 
-            db = await database.getDb();
+            db = await database.getDb(collectionName);
 
             const result = await db.collection.insertMany(docs);
 
@@ -67,7 +69,7 @@ const documents = {
 
         try {
 
-            db = await database.getDb();
+            db = await database.getDb(collectionName);
 
             const result = await db.collection.deleteMany();
 
@@ -85,7 +87,7 @@ const documents = {
 
         try {
 
-            db = await database.getDb();
+            db = await database.getDb(collectionName);
 
             const filter = { _id: ObjectId(ID) };
 
@@ -99,6 +101,34 @@ const documents = {
             await db.client.close();
         }
     },
+    getDocById: async function getDocById(userID) {
+
+        let db;
+
+        console.log(userID)
+
+        try {
+            db = await database.getDb(collectionName);
+
+            const alldocs = await db.collection.find({allowed_users: userID}).toArray();
+
+            console.log(alldocs)
+
+            return alldocs;
+        } catch (error) {
+            return {
+                errors: {
+                    message: error.message,
+                }
+            };
+        } finally {
+            await db.client.close();
+        }
+    },
+    
 };
 
 module.exports = documents;
+
+
+// db.crowd.find({allowed_users: "633ec4334550579921457010"})

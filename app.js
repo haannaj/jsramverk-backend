@@ -7,6 +7,7 @@ const app = express();
 const port = process.env.PORT || 3132;
 
 const list = require('./routes/list');
+const auth = require('./routes/auth');
 
 app.use(express.json());
 const httpServer = require("http").createServer(app);
@@ -33,6 +34,8 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.use('/', list);
+app.use('/auth', auth);
+
 
 
 const io = require("socket.io")(httpServer, {
