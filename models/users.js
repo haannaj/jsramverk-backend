@@ -23,6 +23,25 @@ const users = {
                 delete allUsers[index]["password"]
               });
 
+            console.log(allUsers);
+
+            return allUsers;
+        } catch (error) {
+            return {
+                errors: {
+                    message: error.message,
+                }
+            };
+        } finally {
+            await db.client.close();
+        }
+    },
+    getUsersGraphql: async function getUsersGraphql() {
+        let db = await database.getDb(collectionName);
+
+        try {
+
+            const allUsers = await db.collection.find({}).toArray();
 
             return allUsers;
         } catch (error) {
@@ -42,7 +61,7 @@ const users = {
 
             db = await database.getDb(collectionName);
 
-            const result = await db.collection.deleteMany();
+            await db.collection.deleteMany();
 
         } catch (error) {
             console.error(error.message);

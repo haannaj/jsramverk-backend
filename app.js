@@ -6,8 +6,20 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3132;
 
+
+const visual = true;
+const { graphqlHTTP } = require('express-graphql');
+const {
+  GraphQLSchema
+} = require("graphql");
+
+const RootQueryType = require("./graphql/root.js");
+
+
+
 const list = require('./routes/list');
 const auth = require('./routes/auth');
+
 
 app.use(express.json());
 const httpServer = require("http").createServer(app);
@@ -26,6 +38,20 @@ app.use((req, res, next) => {
 });
 
 console.log(port)
+
+
+
+const schema = new GraphQLSchema({
+    query: RootQueryType
+});
+
+
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    graphiql: visual, // Visual är satt till true under utveckling
+}));
+
+
 
 // don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {
