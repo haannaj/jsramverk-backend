@@ -6,18 +6,17 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3132;
 
-
 const visual = true;
 const { graphqlHTTP } = require('express-graphql');
+
 const {
   GraphQLSchema
 } = require("graphql");
 
 const RootQueryType = require("./graphql/root.js");
 
-
-
 const list = require('./routes/list');
+const mails = require('./routes/mails');
 const auth = require('./routes/auth');
 
 
@@ -61,7 +60,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 app.use('/', list);
 app.use('/auth', auth);
-
+app.use('/api', mails);
 
 
 const io = require("socket.io")(httpServer, {
@@ -79,6 +78,7 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.emit("amount", data);
     })
 });
+
 
 
 app.use((req, res, next) => {

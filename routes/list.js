@@ -7,7 +7,7 @@ const usersModel = require("../models/users");
 
 router.get(
     "/",
-    (req, res, next) => usersModel.checkToken(req, res, next),
+    // (req, res, next) => usersModel.checkToken(req, res, next),
 
     async (req, res) => {
         const documents = await documentModel.getAllDoc();
@@ -18,16 +18,13 @@ router.get(
     }
 );
 
+
 router.get(
     "/usersdoc/:userid",
     (req, res, next) => usersModel.checkToken(req, res, next),
 
     async (req, res) => {
-        // console.log(res)
-        console.log(req.params.userid)
         const documents = await documentModel.getDocById(req.params.userid);
-
-        console.log(documents)
 
         return res.json({
             data: documents
@@ -74,6 +71,18 @@ router.put(
         res.send("Updated!");
     }
 );
+
+router.put(
+    "/updatemail",
+    async (req, res) => {
+
+        const doc = req.body;
+        await documentModel.updateDocMail(doc);
+
+        res.send("Updated!");
+    }
+);
+
 
 module.exports = router;
 

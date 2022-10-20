@@ -8,7 +8,6 @@ const collectionName = "users";
 
 const jwt = require('jsonwebtoken');
 
-
 const users = {
     getAllUsers: async function getAllUsers() {
 
