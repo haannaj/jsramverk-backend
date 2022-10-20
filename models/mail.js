@@ -16,9 +16,7 @@ const mailgun = require('mailgun-js')({
 const mail = {
     sendAccessMail: async function sendAccessMail(data) {
         try {
-            // return mailgun.messages().send(data)
-            // console.log("success")
-            // return data;
+            return mailgun.messages().send(data)
         } catch(e) {
             console.log(e)
             res.status(500);
