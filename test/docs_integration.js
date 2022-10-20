@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test';
+// process.env.NODE_ENV = 'test';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -11,17 +11,18 @@ const collectionName = "crowd"
 
 chai.use(chaiHttp);
 
-
-describe('Editor Documents', () => {
+describe('Document integration', () => {
 
     before(async () => {
-        const db = await database.getDb();
+
+        const db = await database.getDb(collectionName);
 
         db.db.listCollections(
             { name: collectionName }
         )
             .next()
             .then(async function(info) {
+
                 let newDoc = {
                     namn: "Mumin",
                     bor: "Mumindalen"
@@ -39,23 +40,30 @@ describe('Editor Documents', () => {
             });
     });
 
+
     describe('GET /', () => {
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
+                .set('x-access-token', process.env.USER_TOKEN)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array")
-                    res.body.data.length.should.be.eql(0);
+                    res.body.data.length.should.be.eql(1);
                     done();
-                });
+                })
         });
+
 
     describe('POST / Save', () => {
         it('POST / Create new doc', (done) => {
             let newDoc = {
-                namn: "Snorkelfröken",
-                bor: "Mumindalen"
+                namn: "Sniff",
+                text: "Bor hemma hos Mumin och är bra kompisar",
+                owner: "test@test.se",
+                allowed_users: [
+                    "test@test.se"
+                ]  
             };
 
             chai.request(server)
@@ -71,10 +79,11 @@ describe('Editor Documents', () => {
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
+                .set('x-access-token', process.env.USER_TOKEN)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
-                    res.body.data.length.should.be.eql(1);
+                    res.body.data.length.should.be.eql(2);
 
                     done();
                 });
@@ -93,11 +102,11 @@ describe('Editor Documents', () => {
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
+                .set('x-access-token', process.env.USER_TOKEN)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
-                    res.body.data.length.should.be.eql(3);
-
+                    res.body.data.length.should.be.eql(5);
                     done();
                 });
         });
@@ -107,11 +116,16 @@ describe('Editor Documents', () => {
        it('Update doc', (done) => {
             chai.request(server)
                 .get("/")
+                .set('x-access-token', process.env.USER_TOKEN)
                 .end((err, res) => {
                     let updateDoc = {
                         _id: res.body.data[1]['_id'],
                         namn: "Snorkelfröken",
-                        bor: "Muminhus"
+                        text: "Plockar blommor vid Muminhus",
+                        owner: "test@test.se",
+                        allowed_users: [
+                            "test@test.se"
+                        ]  
                     };
 
                     chai.request(server)
@@ -119,7 +133,6 @@ describe('Editor Documents', () => {
                         .send(updateDoc)
                         .end((err, res) => {
                             res.should.have.status(200);
-
                             done();
                         });
                 });
@@ -127,15 +140,17 @@ describe('Editor Documents', () => {
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
+                .set('x-access-token', process.env.USER_TOKEN)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
-                    res.body.data[1]['bor'].should.be.eql('Muminhus')
-                    res.body.data.length.should.be.eql(3);
+                    res.body.data[1]['text'].should.be.eql('Plockar blommor vid Muminhus')
+                    res.body.data.length.should.be.eql(5);
                     done();
                 });
         });
     });
+
     describe('GET / Delete', () => {
         it('Delete all docs', (done) => {
             chai.request(server)
@@ -147,9 +162,9 @@ describe('Editor Documents', () => {
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
+                .set('x-access-token', process.env.USER_TOKEN)
                 .end((err, res) => {
                     res.should.have.status(200);
-
                     res.body.data.length.should.be.eql(0);
                     done();
                 });

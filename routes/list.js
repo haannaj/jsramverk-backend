@@ -7,7 +7,7 @@ const usersModel = require("../models/users");
 
 router.get(
     "/",
-    // (req, res, next) => usersModel.checkToken(req, res, next),
+    (req, res, next) => usersModel.checkToken(req, res, next),
 
     async (req, res) => {
         const documents = await documentModel.getAllDoc();
@@ -48,7 +48,7 @@ router.get(
     async (req, res) => {
         await documentModel.init();
 
-        res.send("tjo tjim!");
+        res.send("documents have been inserted");
     }
 );
 

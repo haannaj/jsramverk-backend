@@ -136,6 +136,8 @@ const users = {
         const email = body.email;
         const password = body.password;
 
+        // console.log(body)
+
         if (!email || !password ) {
             return res.status(400).json({
                 errors: {
@@ -148,10 +150,12 @@ const users = {
 
         let db = await database.getDb(collectionName);
 
+
         try {
            const query = {email: email };
 
            const user = await db.collection.findOne(query);
+
 
            if (user) {
             return users.comparePasswords(res, user, password); 

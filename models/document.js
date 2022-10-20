@@ -123,37 +123,7 @@ const documents = {
         } finally {
             await db.client.close();
         }
-    },
-    // getDocs: async function getDocs(userID) {
-    //     let db = await database.getDb(collectionName);
-
-    //     try {
-    //         // db = await database.getDb(collectionName);
-    //         console.log(userID)
-    //         console.log("tjena")
-
-    //         const filter = { allowed_users: userID }
-
-    //         console.log("tjena2")
-
-
-    //         const alldocs = await db.collection.find(filter);
-
-    //         console.log(alldocs)
-
-    //         return alldocs;
-    //     } catch (error) {
-    //         return {
-    //             errors: {
-    //                 message: error.message,
-    //             }
-    //         };
-    //     } finally {
-    //         await db.client.close();
-    //     }
-
-
-    // }
+    }
     
 };
 
