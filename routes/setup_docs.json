@@ -5,7 +5,8 @@
         "owner": "test@test.se",
         "allowed_users": [
             "test@test.se"
-        ]  
+        ],
+        "comments": []
     },
     {
         "namn": "Sniff",
@@ -13,7 +14,21 @@
         "owner": "test@test.se",
         "allowed_users": [
             "test@test.se"
-        ]  
+        ],
+        "comments": [
+            {
+                "frase": "kompisar",
+                "comment": "Dom har varit kompisar länge, japp det har dom, väldigt länge.",
+                "time": "2019 21 okt",
+                "owner": "test@test.se"
+            },
+            {
+                "frase": "Bor hemma hos Mumin och är bra kompisar",
+                "comment": "Bor i skogen",
+                "time": "2019 21 okt",
+                "owner": "test@test.se"
+            }
+        ]
     },
     {
         "namn": "Snorkfröken",
@@ -21,6 +36,7 @@
         "owner": "test@test.se",
         "allowed_users": [
             "test@test.se"
-        ]  
+        ],
+        "comments": []
     }
 ]

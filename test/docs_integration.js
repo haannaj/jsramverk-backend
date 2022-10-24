@@ -24,8 +24,12 @@ describe('Document integration', () => {
             .then(async function(info) {
 
                 let newDoc = {
-                    namn: "Mumin",
-                    bor: "Mumindalen"
+                    namn: "Mumintrollet",
+                    text: "Bor i Mumindalen",
+                    owner: "test@test.se",
+                    allowed_users: [
+                        "test@test.se"
+                    ]
                 }
                 if (info) {
                     await db.collection.drop();
@@ -42,10 +46,29 @@ describe('Document integration', () => {
 
 
     describe('GET /', () => {
+        var token = "";
+
+        it('POST / Login', (done) => {
+            let newUser = {
+                email: "test@test.se",
+                password: "test1234",
+            };
+        
+            chai.request(server)
+                .post("/auth/login")
+                .send(newUser)
+                .end((err, res) => {
+                    token = res.body.data.token;
+                    res.should.have.status(201); // CREATED STATUS
+
+                    done();
+                });
+        }),
+
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
-                .set('x-access-token', process.env.USER_TOKEN)
+                .set('x-access-token', token)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array")
@@ -54,8 +77,6 @@ describe('Document integration', () => {
                 })
         });
 
-
-    describe('POST / Save', () => {
         it('POST / Create new doc', (done) => {
             let newDoc = {
                 namn: "Sniff",
@@ -79,7 +100,7 @@ describe('Document integration', () => {
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
-                .set('x-access-token', process.env.USER_TOKEN)
+                .set('x-access-token', token)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
@@ -88,9 +109,6 @@ describe('Document integration', () => {
                     done();
                 });
         });
-    });
-
-    describe('POST / Init', () => {
         it('Insert doc from json-file', (done) => {
             chai.request(server)
                 .get("/init")
@@ -102,7 +120,7 @@ describe('Document integration', () => {
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
-                .set('x-access-token', process.env.USER_TOKEN)
+                .set('x-access-token', token)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
@@ -110,13 +128,10 @@ describe('Document integration', () => {
                     done();
                 });
         });
-    });
-
-    describe('PUT / Update', () => {
-       it('Update doc', (done) => {
+        it('Update doc', (done) => {
             chai.request(server)
                 .get("/")
-                .set('x-access-token', process.env.USER_TOKEN)
+                .set('x-access-token', token)
                 .end((err, res) => {
                     let updateDoc = {
                         _id: res.body.data[1]['_id'],
@@ -140,7 +155,7 @@ describe('Document integration', () => {
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
-                .set('x-access-token', process.env.USER_TOKEN)
+                .set('x-access-token', token)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
@@ -149,9 +164,6 @@ describe('Document integration', () => {
                     done();
                 });
         });
-    });
-
-    describe('GET / Delete', () => {
         it('Delete all docs', (done) => {
             chai.request(server)
             .get("/delete")
@@ -162,7 +174,7 @@ describe('Document integration', () => {
         it('GET / 200 HAPPY PATH getting all docs', (done) => {
             chai.request(server)
                 .get("/")
-                .set('x-access-token', process.env.USER_TOKEN)
+                .set('x-access-token', token)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.data.length.should.be.eql(0);
@@ -170,8 +182,6 @@ describe('Document integration', () => {
                 });
             });
         });
-    });
-
 
 });
 });

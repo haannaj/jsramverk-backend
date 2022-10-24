@@ -15,7 +15,7 @@ router.post(
     async (req, res) => {
 
         let data = {
-            from: "Jsramverk Editor",
+            from: "Jsramverk Editor, <no-reply@test.se>",
             to: [req.params.mail],
             subject: "Injudan redigera dokument",
             text: "Registrera dig för att få tillgång till dokumentet, https://www.student.bth.se/~hajh20/editor/",
@@ -40,9 +40,6 @@ router.post(
         try {
             
             const info = req.params
-
-            console.log(info)
-
             await mailModel.updateDocMail(info);
 
             res.send("Updated!");

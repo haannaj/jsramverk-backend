@@ -22,8 +22,6 @@ const users = {
                 delete allUsers[index]["password"]
               });
 
-            console.log(allUsers);
-
             return allUsers;
         } catch (error) {
             return {
@@ -136,8 +134,6 @@ const users = {
         const email = body.email;
         const password = body.password;
 
-        // console.log(body)
-
         if (!email || !password ) {
             return res.status(400).json({
                 errors: {
@@ -152,7 +148,7 @@ const users = {
 
 
         try {
-           const query = {email: email };
+           const query = { email: email };
 
            const user = await db.collection.findOne(query);
 
