@@ -1,4 +1,4 @@
-// process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'test';
 
 const bodyParser = require('body-parser');
 const chai = require('chai');
