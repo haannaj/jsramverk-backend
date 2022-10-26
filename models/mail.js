@@ -16,10 +16,11 @@ const mailgun = require('mailgun-js')({
 const mail = {
     sendAccessMail: async function sendAccessMail(data) {
         try {
-            return mailgun.messages().send(data)
+            return mailgun.messages().send(data);
         } catch(e) {
             console.log(e)
             res.status(500);
+            return e;
         }
     },
     updateDocMail: async function updateDocMail(info) {

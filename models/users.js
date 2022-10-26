@@ -110,7 +110,7 @@ const users = {
 
                     return res.status(201).json({
                         data: {
-                            message: "User succesfully created" // KANSKE ÄVEN SKRIVA UT ANVÄNDARENS ID FÖR SNYGGHETENS SKULL
+                            message: "User succesfully created" 
                         }
                     });
                 } catch (error) {

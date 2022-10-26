@@ -29,7 +29,8 @@ describe('Document integration', () => {
                     owner: "test@test.se",
                     allowed_users: [
                         "test@test.se"
-                    ]
+                    ],
+                    comments: []
                 }
                 if (info) {
                     await db.collection.drop();
@@ -45,10 +46,10 @@ describe('Document integration', () => {
     });
 
 
-    describe('GET /', () => {
+    describe('Sign in and integrate with docs', () => {
         var token = "";
 
-        it('POST / Login', (done) => {
+        it('POST /auth/login, 201 HAPPY PATH and sign in', (done) => {
             let newUser = {
                 email: "test@test.se",
                 password: "test1234",
@@ -77,7 +78,7 @@ describe('Document integration', () => {
                 })
         });
 
-        it('POST / Create new doc', (done) => {
+        it('POST /save, 201 HAPPY PATH and create new doc and save to database', (done) => {
             let newDoc = {
                 namn: "Sniff",
                 text: "Bor hemma hos Mumin och är bra kompisar",
@@ -97,7 +98,7 @@ describe('Document integration', () => {
                     done();
                 });
         });
-        it('GET / 200 HAPPY PATH getting all docs', (done) => {
+        it('GET / 200 HAPPY PATH and checking new document saved in database', (done) => {
             chai.request(server)
                 .get("/")
                 .set('x-access-token', token)
@@ -105,11 +106,10 @@ describe('Document integration', () => {
                     res.should.have.status(200);
                     res.body.data.should.be.an("array");
                     res.body.data.length.should.be.eql(2);
-
                     done();
                 });
         });
-        it('Insert doc from json-file', (done) => {
+        it('GET /init, 200 HAPPY PATH and insert doc from json-file', (done) => {
             chai.request(server)
                 .get("/init")
                 .end((err, res) => {
@@ -117,7 +117,7 @@ describe('Document integration', () => {
                     done();
                 });
         });
-        it('GET / 200 HAPPY PATH getting all docs', (done) => {
+        it('GET / 200 HAPPY PATH and checking document from json-file', (done) => {
             chai.request(server)
                 .get("/")
                 .set('x-access-token', token)
@@ -128,7 +128,7 @@ describe('Document integration', () => {
                     done();
                 });
         });
-        it('Update doc', (done) => {
+        it('PUT /update, 200 HAPPY PATH and update doc', (done) => {
             chai.request(server)
                 .get("/")
                 .set('x-access-token', token)
@@ -152,7 +152,7 @@ describe('Document integration', () => {
                         });
                 });
             });
-        it('GET / 200 HAPPY PATH getting all docs', (done) => {
+        it('GET / 200 HAPPY PATH and check doc been updated', (done) => {
             chai.request(server)
                 .get("/")
                 .set('x-access-token', token)
@@ -164,14 +164,50 @@ describe('Document integration', () => {
                     done();
                 });
         });
-        it('Delete all docs', (done) => {
+        it('PUT /updatecomments, 200 HAPPY PATH and update doc with comment', (done) => {
+            chai.request(server)
+                .get("/")
+                .set('x-access-token', token)
+                .end((err, res) => {
+                    let updateDoc = {
+                        _id: res.body.data[0]['_id'],
+                        frase: "Mumindalen",
+                        comment: "Som ligger i Mumintown",
+                        time: "Mon Oct 24 2022 18:24:00",
+                        owner: res.body.data[0]['owner'],
+                    };
+
+                    chai.request(server)
+                        .put("/updatecomments")
+                        .send(updateDoc)
+                        .end((err, res) => {
+                            res.should.have.status(200);
+                            done();
+                        });
+                });
+            });
+        it('GET / 200 HAPPY PATH and check doc been updated with comment', (done) => {
+            chai.request(server)
+                .get("/")
+                .set('x-access-token', token)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.data[0]['comments'].should.be.an("array");
+                    res.body.data[0]['comments'][0]['frase'].should.be.eql("Mumindalen")
+                    res.body.data[0]['comments'][0]['comment'].should.be.eql("Som ligger i Mumintown")
+                    res.body.data[0]['comments'][0]['owner'].should.be.eql("test@test.se")
+                    res.body.data[0]['comments'][0]['time'].should.be.eql("Mon Oct 24 2022 18:24:00")
+                    done();
+                });
+        });
+        it('GET /delete 200 HAPPY PATH and delete all docs', (done) => {
             chai.request(server)
             .get("/delete")
             .end((err, res) => {
                 res.should.have.status(200);
                 done();
         });
-        it('GET / 200 HAPPY PATH getting all docs', (done) => {
+        it('GET / 200 HAPPY PATH checking all doc is deleted', (done) => {
             chai.request(server)
                 .get("/")
                 .set('x-access-token', token)
@@ -182,6 +218,5 @@ describe('Document integration', () => {
                 });
             });
         });
-
 });
 });

@@ -83,6 +83,16 @@ router.put(
     }
 );
 
+router.put(
+    "/updatecomments",
+    async (req, res) => {
+
+        const doc = req.body;
+        await documentModel.updateDocComment(doc);
+
+        res.send("Updated!");
+    }
+);
 
 module.exports = router;
 

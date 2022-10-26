@@ -111,8 +111,6 @@ const documents = {
 
             const alldocs = await db.collection.find({allowed_users: userID}).toArray();
 
-            console.log(alldocs)
-
             return alldocs;
         } catch (error) {
             return {
@@ -123,9 +121,34 @@ const documents = {
         } finally {
             await db.client.close();
         }
-    }
+    },
+    updateDocComment: async function updateDocComment(doc) {
+        let db;
+
+        let ID = doc["_id"]
+        delete doc["_id"]
+
+        try {
+
+            db = await database.getDb(collectionName);
+
+            const filter = { _id: ObjectId(ID) };
+            
+            const result = await db.collection.updateOne(
+                filter, {
+                    $push: {
+                      comments: doc,
+                    }
+                  }
+            )
+
+        } catch (error) {
+            console.error(error.message);
+        } finally {
+            await db.client.close();
+        }
+    },
     
 };
 
 module.exports = documents;
-

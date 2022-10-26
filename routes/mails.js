@@ -5,11 +5,6 @@ var router = express.Router();
 const mailModel = require("../models/mail");
 
 
-const mailgun = require('mailgun-js')({
-    apiKey: process.env.MAILGUN_APIKEY,
-    domain: process.env.MAILGUN_DOMAIN,
-});
-
 router.post(
     "/sendaccessemail/:mail", 
     async (req, res) => {
@@ -22,7 +17,7 @@ router.post(
         };
         
         try {
-            await mailModel.sendAccessMail(data);
+            const result = await mailModel.sendAccessMail(data);
             res.send("email sent!")
 
         } catch(e) {
@@ -38,7 +33,6 @@ router.post(
     async (req, res) => {
 
         try {
-            
             const info = req.params
             await mailModel.updateDocMail(info);
 
@@ -47,13 +41,10 @@ router.post(
             console.log(e);
             res.status(500);
         }
-
         
     }
 );
 
 
 module.exports = router;
-
-
 
